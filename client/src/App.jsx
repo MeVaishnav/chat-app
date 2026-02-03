@@ -3,9 +3,10 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+
 const App = () => {
   return (
-    <div className="bg-[url('./src/assets/bgImage.svg')] bg-contain">
+    <div className="min-h-screen bg-[url('./src/assets/bgImage.svg')] bg-cover bg-center">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -14,4 +15,5 @@ const App = () => {
     </div>
   );
 };
+
 export default App;
