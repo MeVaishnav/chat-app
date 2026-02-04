@@ -4,8 +4,8 @@ import {
   login,
   signup,
   updateProfile,
-} from "../controllers/userController";
-import { protectRoute } from "../middleware/auth";
+} from "../controllers/userController.js";
+import { protectRoute } from "../middleware/auth.js";
 
 const userRouter = express.Router();
 
