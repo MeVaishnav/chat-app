@@ -1,6 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import assets from "../assets/assets";
+import { AuthContext } from "../../context/AuthContext";
+
 const LoginPage = () => {
   const [currentState, setCurrentState] = useState("Sign up");
   const [fullName, setFullName] = useState("");
@@ -9,12 +11,20 @@ const LoginPage = () => {
   const [bio, setBio] = useState("");
   const [isDataSubmitted, setIsDataSubmitted] = useState(false);
 
+  const { login } = useContext(AuthContext);
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     if (currentState === "Sign up" && !isDataSubmitted) {
       setIsDataSubmitted(true);
       return;
     }
+    login(currentState === "Sign up" ? "signup" : "login", {
+      fullName,
+      email,
+      password,
+      bio,
+    });
   };
 
   return (

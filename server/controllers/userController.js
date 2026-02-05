@@ -2,8 +2,8 @@ import { generateToken } from "../library/utils.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "cloudinary";
-//signup for user
 
+//signup for user
 export const signup = async (req, res) => {
   const { fullName, email, password, bio } = req.body;
 
@@ -41,12 +41,16 @@ export const signup = async (req, res) => {
   }
 };
 
-//
 //login for user
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const userData = await User.findOne({ email });
+
+    // ✅ REQUIRED FIX: handle user not found
+    if (!userData) {
+      return res.json({ success: false, message: "Invalid credentials" });
+    }
 
     const isPasswordCorrect = await bcrypt.compare(password, userData.password);
 
@@ -82,7 +86,12 @@ export const updateProfile = async (req, res) => {
     let updatedUser;
 
     if (!profilePic) {
-      await User.findByIdAndUpdate(userId, { bio, fullName }, { new: true });
+      // ✅ REQUIRED FIX: you forgot to store updated user
+      updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { bio, fullName },
+        { new: true }
+      );
     } else {
       const upload = await cloudinary.uploader.upload(profilePic);
       updatedUser = await User.findByIdAndUpdate(
