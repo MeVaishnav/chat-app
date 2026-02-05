@@ -1,8 +1,12 @@
 import { grey } from "@mui/material/colors";
 import assets, { userDummyData } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 const Sidebar = ({ selectedUser, setSelectedUser }) => {
+  const { logout } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   return (
@@ -36,7 +40,9 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
                 EditProfile
               </p>
               <hr className="my-2 border-t border-gray-600" />
-              <p className="cursor-pointer text-sm">Logout</p>
+              <p onClick={() => logout()} className="cursor-pointer text-sm">
+                Logout
+              </p>
             </div>
           </div>
         </div>
