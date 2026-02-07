@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [socket, setSocket] = useState(null);
 
-  //connect socket function to handle socket connection and online users updates
+  // connect socket function to handle socket connection and online users updates
   const connectSocket = (userData) => {
     if (!userData || socket?.connected) return;
 
@@ -24,6 +24,8 @@ export const AuthProvider = ({ children }) => {
       },
     });
 
+    newSocket.connect(); // ✅ REQUIRED
+
     setSocket(newSocket);
 
     newSocket.on("getOnlineUsers", (userIds) => {
@@ -31,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  //check if user is authenticated and if so, set the user data and connect the socket
+  // check if user is authenticated and if so, set the user data and connect the socket
   const checAuth = async () => {
     try {
       const { data } = await axios.get("/api/auth/check");
@@ -44,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  //login function to handle user authentication and socket connection
+  // login function to handle user authentication and socket connection
   const login = async (state, credentials) => {
     try {
       const { data } = await axios.post(`/api/auth/${state}`, credentials);
@@ -64,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  //logout function to handle user logout and socket disconnection
+  // logout function to handle user logout and socket disconnection
   const logout = async () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -75,13 +77,15 @@ export const AuthProvider = ({ children }) => {
     socket?.disconnect();
   };
 
-  //update profile function to handle  user profile updates
+  // update profile function to handle user profile updates
   const updateProfile = async (body) => {
     try {
       const { data } = await axios.post("/api/auth/update-profile", body);
       if (data.success) {
         setAuthUser(data.userData);
-        toast.success(data.success);
+        toast.success(data.message); // ✅ REQUIRED
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
