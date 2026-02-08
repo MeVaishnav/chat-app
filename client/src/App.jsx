@@ -10,7 +10,7 @@ const App = () => {
   const { authUser } = useContext(AuthContext);
 
   return (
-    <div className="min-h-screen bg-[url('./src/assets/bgImage.svg')] bg-cover bg-center">
+    <div className="min-h-screen bg-[url('./src/assets/bgImage.jpg')] bg-cover bg-center">
       <Toaster />
       <Routes>
         <Route
